@@ -73,14 +73,13 @@ export class DetailUsersCardComponent implements OnInit {
         email: vm.user.email,
         username: vm.user.username,
         city: vm.user.city,
+        totalStoryPoints: vm.user.totalStoryPoints,
       });
     }
 
-    if (vm.editMode) {
-      this.formGroup.enable();
-    } else {
-      this.formGroup.disable();
-    }
+    if (vm.editMode) this.formGroup.enable();
+
+    this.formGroup.disable();
   }
 
   public formGroup = new FormBuilder().group({
@@ -88,6 +87,7 @@ export class DetailUsersCardComponent implements OnInit {
     email: new FormControl({ value: '', disabled: !this.vm.editMode }, [Validators.required, Validators.email]),
     username: new FormControl({ value: '', disabled: !this.vm.editMode }),
     city: new FormControl({ value: '', disabled: !this.vm.editMode }),
+    totalStoryPoints: new FormControl({ value: 0, disabled: !this.vm.editMode }),
   });
 
   @Output() editUser = new EventEmitter<{
@@ -97,6 +97,10 @@ export class DetailUsersCardComponent implements OnInit {
   @Output() closeUser = new EventEmitter();
   @Output() closeEditMode = new EventEmitter();
   @Output() openEditMode = new EventEmitter();
+  @Output() editStorypoints = new EventEmitter<{
+    user: CreateUserDTO;
+    onSuccessEditStorypointsCb: onSuccessEditionCbType;
+  }>();
   @Output() deleteUser = new EventEmitter();
   @ViewChild('snackbar') snackbarTemplateRef!: TemplateRef<any>;
   private dadata = inject(DadataApiService);
@@ -128,11 +132,27 @@ export class DetailUsersCardComponent implements OnInit {
         name: this.formGroup.value.name || '',
         username: this.formGroup.value.username || '',
         city: this.formGroup.value.city || '',
+        totalStoryPoints: this.formGroup.value.totalStoryPoints || 0,
         email: this.formGroup.value.email?.trim().toLowerCase() || '',
         purchaseDate: new Date().toString() || '',
         educationStatus: 'trainee',
       },
       onSuccessCb: this.onEditSuccess,
+    });
+  }
+
+  onEditStorypoints(): void {
+    this.editStorypoints.emit({
+      user: {
+        name: this.formGroup.value.name || '',
+        username: this.formGroup.value.username || '',
+        city: this.formGroup.value.city || '',
+        totalStoryPoints: this.formGroup.value.totalStoryPoints || 0,
+        email: this.formGroup.value.email?.trim().toLowerCase() || '',
+        purchaseDate: new Date().toString() || '',
+        educationStatus: 'trainee',
+      },
+      onSuccessEditStorypointsCb: this.onEditSuccess,
     });
   }
 
