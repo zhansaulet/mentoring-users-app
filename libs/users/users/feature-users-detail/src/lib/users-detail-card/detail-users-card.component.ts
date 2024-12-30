@@ -77,9 +77,9 @@ export class DetailUsersCardComponent implements OnInit {
       });
     }
 
-    if (vm.editMode) this.formGroup.enable();
-
-    this.formGroup.disable();
+    if (vm.editMode) {
+      this.formGroup.enable();
+    } else this.formGroup.disable();
   }
 
   public formGroup = new FormBuilder().group({
@@ -87,7 +87,7 @@ export class DetailUsersCardComponent implements OnInit {
     email: new FormControl({ value: '', disabled: !this.vm.editMode }, [Validators.required, Validators.email]),
     username: new FormControl({ value: '', disabled: !this.vm.editMode }),
     city: new FormControl({ value: '', disabled: !this.vm.editMode }),
-    totalStoryPoints: new FormControl({ value: 0, disabled: !this.vm.editMode }),
+    totalStoryPoints: new FormControl({ value: 0, disabled: true }),
   });
 
   @Output() editUser = new EventEmitter<{
@@ -142,6 +142,7 @@ export class DetailUsersCardComponent implements OnInit {
   }
 
   onEditStorypoints(): void {
+    this.formGroup.get('totalStoryPoints')?.disabled;
     this.editStorypoints.emit({
       user: {
         name: this.formGroup.value.name || '',

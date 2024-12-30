@@ -30,8 +30,25 @@ export const editUser = createAction(
     onSuccessCb: onSuccessEditionCbType;
   }>()
 );
+export const editUserStoryPoints = createAction(
+  '[Users Detail] Edit User StoryPoints',
+  props<{
+    userData: CreateUserDTO;
+    id: number;
+    onSuccessEditStorypointsCb: onSuccessEditionCbType;
+  }>()
+);
 export const editUserSuccess = createAction('[Users Detail] Edit User Success', props<{ userData: UsersDTO }>());
+export const editUserStoryPointsSuccess = createAction(
+  '[Users Detail] Edit User Storypoints Success',
+  props<{ userData: UsersDTO }>()
+);
+
 export const editUserFailed = createAction('[Users Detail] Edit Failed', props<{ error: UsersErrors | null }>());
+export const editUserStoryPointsFailed = createAction(
+  '[Users Detail] Edit User Storypoints Failed',
+  props<{ error: UsersErrors | null }>()
+);
 
 export const loadUser = createAction('[Users Page] Load User');
 export const loadUserSuccess = createAction('[Users/Api] Load User Success', props<{ userData: UsersEntity }>());
